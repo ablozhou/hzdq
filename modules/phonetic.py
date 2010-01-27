@@ -1,11 +1,11 @@
 #!/bin/env python
 # -*- coding: utf8 -*-
-#	Author:	    ablozhou
-#	E-mail:		ablozhou@gmail.com
+#   Author:        ablozhou
+#   E-mail:        ablozhou@gmail.com
 #
-#	Copyright 2010 ablozhou
+#   Copyright 2010 ablozhou
 #
-#	Distributed under the terms of the GPL (GNU Public License)
+#   Distributed under the terms of the GPL (GNU Public License)
 #
 #   HZDQ(Hanzi Daquan) is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
