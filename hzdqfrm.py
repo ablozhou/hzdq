@@ -1,5 +1,4 @@
 #!/bin/env python
-<<<<<<< .mine
 # -*- coding: utf8 -*-
 #	Author:	    ablozhou
 #	E-mail:		ablozhou@gmail.com
@@ -26,9 +25,7 @@
 #   date          author    notes
 #   2010.1.26    ablozhou   release 0.5 OS:ubuntu 9.10 python:2.6.2
 #
-=======
-# -*- coding: utf8 -*-
->>>>>>> .r15
+
 
 import wx
 import mainui_xrc
@@ -51,7 +48,7 @@ class hzdqframe(mainui_xrc.xrcmframe):
         
         self.txtsearch = xrc.XRCCTRL(self, "txtsearch")
         self.txtsearch.SetValue('中')
-<<<<<<< .mine
+
         s = self.txtsearch.GetValue().encode('utf8')
         f = file('./data/hzidx.dat','rb')
         self.hzidx = pk.load(f)
@@ -67,26 +64,7 @@ class hzdqframe(mainui_xrc.xrcmframe):
     def __del__(self):
         self.unihan.close()
 
-=======
-        s = self.txtsearch.GetValue().encode('utf8')
-        f = file('../../data/hzidx.dat','rb')
-        self.hzidx = pk.load(f)
-        f.close()
-        #self.procdict = procdict.procdict('../../data/unihan.zip','blog.csdn.net/ablo_zhou')
-        #self.unihan = self.procdict.dicttxt
-           
-        self.unihan = file('../../data/unihan.txt','rb')
-        #indx = '㐅'
 
-        seek = self.hzidx[s]
-        self.unihan.seek(seek)
-        line = self.unihan.readline()
-        self.txtmain.SetValue(line)
-
-    def __del__(self):
-        self.unihan.close()
-
->>>>>>> .r15
 #        self.gs = group.Groups(2, 20)
 #        self.gs.open('../../data/freq_part.txt')
 #        self.g = iter(self.gs)
@@ -148,7 +126,7 @@ class hzdqframe(mainui_xrc.xrcmframe):
                 continue
            
             try:
-<<<<<<< .mine
+
                 seek = self.hzidx[c.encode('utf8')]
                 self.unihan.seek(seek)
                 line = self.unihan.readline()
@@ -162,23 +140,7 @@ class hzdqframe(mainui_xrc.xrcmframe):
                 fmt += self.fmtgloss(l[3])
                 res += fmt +'\n\n'
                 #res += '='*30
-=======
-                seek = self.hzidx[c.encode('utf8')]
-                self.unihan.seek(seek)
-                line = self.unihan.readline()
-                #self.txtmain.SetValue(line)
-                
-                
-                log.debug(line)
-                l = line.split('\t')
-                fmt = l[0]+'\n'+'='*30
-                #for part in l[1:]:
-                fmt += self.fmtunicode(l[1])
-                fmt += self.fmtphonetic(l[2])
-                fmt += self.fmtgloss(l[3])
-                res += fmt +'\n\n'
-                res += '='*30
->>>>>>> .r15
+
             except AttributeError:
                 res += c +'\n'
         self.txtmain.SetValue(res)
