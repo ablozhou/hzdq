@@ -1,0 +1,6 @@
+#summary JapaneseKun
+
+= Introduction =
+
+Jppanese Kun is the Kanji prouciation of local Japanese 
+
