@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary About hzdq(Hanzi Daquan)
 
 = Introduction =
 
@@ -12,3 +12,10 @@ Han ideographic script from this dictionary.
 * OS:ubuntu 9.10
 * python 2.6
 * wxpython 2.8
+
+= About Author =
+Zhou Haihan(Ablo Zhou), lived in Beijing.
+10 years of work experience.
+Worked as a development manager of communication and Internet.
+Interested in OS kernel, High performance, High availability system.
+Preferred python, C++ 
