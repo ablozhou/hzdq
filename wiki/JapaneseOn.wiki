@@ -1,0 +1,5 @@
+#summary about Japanese On phonetic
+
+= Introduction =
+
+Japanese On phonetic symbols is the Kanji pronunciation of Chinese. One Kanji(Japanese Hanzi Character) may have tow pronunciation, one is local pronunciation,named JapaneseKun , the other named JapaneseOn, means Chinese-Japanese. 
