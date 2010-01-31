@@ -24,9 +24,9 @@
 #   modify history
 #   date          author    notes
 #   2010.1.26    ablozhou   release 0.5 OS:ubuntu 9.10 python:2.6.2
-#
+#   2010.1.31   ablozhou    release 0.6 OS:run in windows xp, still can't display korean.
 
-
+import sys
 import wx
 import mainui_xrc
 import wx.xrc as xrc
@@ -37,7 +37,8 @@ import procdict
 import cPickle as pk
 
 log = log4py.log4py('[hzdqframe]')
-    
+
+encoding = sys.getfilesystemencoding()    
     
 class hzdqframe(mainui_xrc.xrcmframe):
     def __init__(self,parent):
@@ -47,7 +48,7 @@ class hzdqframe(mainui_xrc.xrcmframe):
         self.txtmain = xrc.XRCCTRL(self, "txtmain")
         
         self.txtsearch = xrc.XRCCTRL(self, "txtsearch")
-        self.txtsearch.SetValue('中')
+        self.txtsearch.SetValue('中'.decode('utf8'))
 
         s = self.txtsearch.GetValue().encode('utf8')
         f = file('./data/hzidx.dat','rb')
@@ -62,7 +63,9 @@ class hzdqframe(mainui_xrc.xrcmframe):
         self.OnButton_btnsearch(None)
 
     def __del__(self):
+        log.debug('close file')
         self.unihan.close()
+        log.debug('close file finished')
 
 
 #        self.gs = group.Groups(2, 20)
@@ -131,7 +134,7 @@ class hzdqframe(mainui_xrc.xrcmframe):
                 self.unihan.seek(seek)
                 line = self.unihan.readline()
                
-                log.debug(line)
+                log.debug(line.decode('utf8'))
                 l = line.split('\t')
                 fmt = l[0]+'\n'+'='*15
                 
@@ -143,19 +146,19 @@ class hzdqframe(mainui_xrc.xrcmframe):
 
             except AttributeError:
                 res += c +'\n'
-        self.txtmain.SetValue(res)
+        self.txtmain.SetValue(res.decode('utf8').encode(encoding))
 
     def OnButton_btnabout(self, evt):
         description = "The dictionary is used to search all Chinese Characters of the latest Unicode Han Database version 5.2"
-        licence = "GNU General Public License version 2"
+        licence = "GNU General Public License version 2\n"
         info = wx.AboutDialogInfo()
-        info.SetVersion('0.5')
+        info.SetVersion('0.6')
         info.SetName('Hanzi Daquan')
         info.SetCopyright('(C) 2010 ablozhou')
         info.SetWebSite('http://blog.csdn.net/ablo_zhou')
         info.SetDescription(description)
         info.SetLicence(licence)
-        info.AddDeveloper('ablozhou(周海汉) ablozhou@gmail.com\n')
+        info.AddDeveloper('ablozhou(周海汉) ablozhou@gmail.com\n'.decode('utf8'))
         
         wx.AboutBox(info)
         

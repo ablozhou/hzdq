@@ -24,7 +24,7 @@
 #
 # todo: 写文件，log级别常数定义
 import datetime
-
+import sys
 dest = {1:'stdout',2:'stderr',3:'file'}  #stdout
 logs = ['info','debug','warn','error','fatal']
 #logs = []
@@ -57,7 +57,7 @@ class log4py:
     #flag = INFO,DEBUG,WARNING,ERROR,FATAL
     def output(self, *fmt):
         for s in fmt:
-            print s,
+            print s.encode(sys.getfilesystemencoding()),
         print ''
     
     def debug(self,*fmt):

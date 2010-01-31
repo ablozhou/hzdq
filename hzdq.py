@@ -27,7 +27,8 @@
 #    
 #   modify history
 #   date          author    notes
-#   2010.1.26    ablozhou   release 0.5 OS:ubuntu 9.10 python:2.6.2
+#   2010.1.26   ablozhou    release 0.5 OS:ubuntu 9.10 python:2.6.2
+#   2010.1.31   ablozhou    release 0.6 OS:run in windows xp, still can't display korean.
 #
 __appname__ = 'hzdq'
 __author__ = 'ablozhou'
