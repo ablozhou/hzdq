@@ -86,19 +86,19 @@ class hzdqframe(mainui_xrc.xrcmframe):
         for s in plist:
             ph = s.split(':')
             if ph[0] == 'py': #拼音
-                fmt += '\n国语拼音:'+ph[1]
+                fmt += '\n汉语拼音:'+ph[1]
             elif ph[0] == 'Cant':
                 fmt += '\n粤语拼音:'+ph[1]
             elif ph[0] == 'Hangul':
-                fmt += '\n朝鲜语谚文:'+ph[1]
+                fmt += '\n朝鲜谚文:'+ph[1]
             elif ph[0] == 'KoRom':
-                fmt += '\n朝鲜语罗马字:'+ph[1]
+                fmt += '\n朝鲜罗马字:'+ph[1]
             elif ph[0] == 'JKun':
                 fmt += '\n日语训读:'+ph[1]
             elif ph[0] == 'JOn':
                 fmt += '\n日语音读:'+ph[1]
             elif ph[0] == 'Viet':
-                fmt += '\n越南语音标:'+ph[1]
+                fmt += '\n越南音标:'+ph[1]
         return fmt
     
     def fmtunicode(self,unicode):
