@@ -25,6 +25,8 @@
 # todo: 写文件，log级别常数定义
 import datetime
 import sys
+import traceback
+
 dest = {1:'stdout',2:'stderr',3:'file'}  #stdout
 logs = ['info','debug','warn','error','fatal']
 #logs = []
