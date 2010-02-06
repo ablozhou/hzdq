@@ -93,6 +93,7 @@ class hzdqframe(mainui_xrc.xrcmframe):
                 fmt += '\n粤语拼音:'+ph[1]
             elif ph[0] == 'Hangul':
                 fmt += '\n朝鲜谚文:'+ph[1]
+                #print repr(ph[1].decode('utf8'))
             elif ph[0] == 'KoRom':
                 fmt += '\n朝鲜罗马字:'+ph[1]
             elif ph[0] == 'JKun':
@@ -165,13 +166,13 @@ class hzdqframe(mainui_xrc.xrcmframe):
 
             except AttributeError:
                 res += c +'\n'
-        self.txtmain.SetValue(res.decode('utf8').encode(encoding))
+        self.txtmain.SetValue(res.decode('utf8'))
 
     def OnButton_btnabout(self, evt):
         description = "The dictionary is used to search all Chinese Characters of the latest Unicode Han Database version 5.2"
         licence = "GNU General Public License version 2\n"
         info = wx.AboutDialogInfo()
-        info.SetVersion('0.6')
+        info.SetVersion('0.7')
         info.SetName('Hanzi Daquan')
         info.SetCopyright('(C) 2010 ablozhou')
         info.SetWebSite('http://blog.csdn.net/ablo_zhou')
