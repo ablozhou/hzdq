@@ -22,14 +22,14 @@
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 #   HZDQ(Hanzi Daquan) is a dictionary  contains all data from Unicode han database(Unihan),
-#   which is a part of the latest Unicode version 5.2. You can find any format of 
+#   which is a part of the latest Unicode version 5.2. You can find any format of
 #   Han ideographic script from this dictionary.
-#    
+#
 #   modify history
 #   date          author    notes
 #   2010.1.26   ablozhou    release 0.5 OS:ubuntu 9.10 python:2.6.2
 #   2010.1.31   ablozhou    release 0.6 OS:run in windows xp, still can't display korean.
-#
+#   2010.2.6    ablozhou    release 0.7 add wubi,cangjie,4corner,zhengma codes
 __appname__ = 'hzdq'
 __author__ = 'ablozhou'
 __email__='ablozhou@gmail.com'
@@ -40,7 +40,7 @@ import wx
 import mainui_xrc
 import hzdqfrm
 
-workpath = os.path.dirname(os.path.realpath(sys.argv[0])) 
+workpath = os.path.dirname(os.path.realpath(sys.argv[0]))
 os.chdir(workpath)
 sys.path.insert(0, workpath)
 

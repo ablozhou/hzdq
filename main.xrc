@@ -79,12 +79,11 @@
           <flag>wxALL|wxEXPAND</flag>
           <border>1</border>
         </object>
-      
-    </object>
+      </object>
       <size>400,400</size>
     </object>
     <object class="wxStatusBar" name="status"/>
-    <size>400,400</size>
+    <size>500,400</size>
     <title>Hanzi Daquan</title>
     <centered>1</centered>
   </object>

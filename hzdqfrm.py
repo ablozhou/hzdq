@@ -20,7 +20,7 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program; if not, write to the Free Software
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-# 
+#
 #   modify history
 #   date          author    notes
 #   2010.1.26    ablozhou   release 0.5 OS:ubuntu 9.10 python:2.6.2
@@ -38,15 +38,15 @@ import cPickle as pk
 
 log = log4py.log4py('[hzdqframe]')
 
-encoding = sys.getfilesystemencoding()    
-    
+encoding = sys.getfilesystemencoding()
+
 class hzdqframe(mainui_xrc.xrcmframe):
     def __init__(self,parent):
-        
+
         mainui_xrc.xrcmframe.__init__(self,parent)
-       
+
         self.txtmain = xrc.XRCCTRL(self, "txtmain")
-        
+
         self.txtsearch = xrc.XRCCTRL(self, "txtsearch")
         self.txtsearch.SetValue('中'.decode('utf8'))
 
@@ -56,7 +56,7 @@ class hzdqframe(mainui_xrc.xrcmframe):
         f.close()
         #self.procdict = procdict.procdict('../../data/unihan.zip','blog.csdn.net/ablo_zhou')
         #self.unihan = self.procdict.dicttxt
-           
+
         self.unihan = file('./data/unihan.dat','rb')
         #indx = '㐅'
 
@@ -72,15 +72,17 @@ class hzdqframe(mainui_xrc.xrcmframe):
 #        self.gs.open('../../data/freq_part.txt')
 #        self.g = iter(self.gs)
 #        self.group = self.g.next()
-#        self.p = iter(self.group)  
+#        self.p = iter(self.group)
     def fmtgloss(self,gloss):
         glist = gloss.split(':')
         if glist[0] == 'en_gls':
             return '\n英语解释:\t'+glist[1]
         return ''
-    
-    def fmtphonetic(self,phonetic):
-        plist = phonetic.split(',')
+
+    def fmtattr(self,attr):
+        if len(attr) < 2: #空的
+            return ''
+        plist = attr.split(',')
         fmt = ''
         #处理拼音
         for s in plist:
@@ -99,17 +101,34 @@ class hzdqframe(mainui_xrc.xrcmframe):
                 fmt += '\n日语音读:'+ph[1]
             elif ph[0] == 'Viet':
                 fmt += '\n越南音标:'+ph[1]
+            elif ph[0] == 'wb':
+                fmt += '\n五笔:'+ph[1]
+            elif ph[0] == 'cj':
+                fmt += '\n仓颉:'+ph[1]
+            elif ph[0] == '4c':
+                fmt += '\n四角号码:'+ph[1]
+            elif ph[0] == 'zm':
+                fmt += '\n郑码:'+ph[1]
+            elif ph[0] == 'fq':
+                fmt += '\n频级:'+ph[1]
+            elif ph[0] == 'rd':
+                fmt += '\n部首:'+ph[1]
+            elif ph[0] == 'sn':
+                fmt += '\n笔画数:'+ph[1]
+            elif ph[0] == 'st':
+                fmt += '\n笔顺:'+ph[1]
+
         return fmt
-    
+
     def fmtunicode(self,unicode):
         return '\nUnicode:'+unicode
-           
+
     def OnButton_btnsave(self, evt):
         f = open('save.txt','a')
         r = self.txtmain.GetValue().encode('utf8')
         f.write(r)
         f.close()
-            
+
     def OnButton_btnsearch(self, evt):
         log.debug('OnButton_btnsearch')
         search = self.txtsearch.GetValue()
@@ -127,19 +146,19 @@ class hzdqframe(mainui_xrc.xrcmframe):
             if c in string.digits:
                 res += c.encode('utf8')+'\n'
                 continue
-           
+
             try:
 
                 seek = self.hzidx[c.encode('utf8')]
                 self.unihan.seek(seek)
                 line = self.unihan.readline()
-               
+
                 log.debug(line.decode('utf8'))
                 l = line.split('\t')
                 fmt = l[0]+'\n'+'='*15
-                
+
                 fmt += self.fmtunicode(l[1])
-                fmt += self.fmtphonetic(l[2])
+                fmt += self.fmtattr(l[2])
                 fmt += self.fmtgloss(l[3])
                 res += fmt +'\n\n'
                 #res += '='*30
@@ -159,8 +178,8 @@ class hzdqframe(mainui_xrc.xrcmframe):
         info.SetDescription(description)
         info.SetLicence(licence)
         info.AddDeveloper('ablozhou(周海汉) ablozhou@gmail.com\n'.decode('utf8'))
-        
+
         wx.AboutBox(info)
-        
+
     def OnKey_down_btnabout(self, evt):
         self.OnButton_btnabout(evt)
