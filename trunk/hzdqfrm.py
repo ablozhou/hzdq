@@ -75,7 +75,7 @@ class hzdqframe(mainui_xrc.xrcmframe):
 #        self.p = iter(self.group)
     def fmtgloss(self,gloss):
         glist = gloss.split(':')
-        if glist[0] == 'en_gls':
+        if glist[0] == 'en':
             return '\n英语解释:\t'+glist[1]
         return ''
 
