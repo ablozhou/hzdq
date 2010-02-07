@@ -34,20 +34,7 @@ __appname__ = 'hzdq'
 __author__ = 'ablozhou'
 __email__='ablozhou@gmail.com'
 
-import sys
-import os
-import wx
-import mainui_xrc
-import hzdqfrm
 
-workpath = os.path.dirname(os.path.realpath(sys.argv[0]))
-os.chdir(workpath)
-sys.path.insert(0, workpath)
+import hzdq
 
-#TODO 设置多行文本控件字体
-#指定一个文件的另一个执行文件
-if __name__ == '__main__':
-    app = wx.PySimpleApp()
-    frame = hzdqfrm.hzdqframe(parent = None)
-    frame.Show()
-    app.MainLoop()
+hzdq.main()
