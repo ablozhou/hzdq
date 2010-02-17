@@ -1,4 +1,4 @@
-#!/bin/env python
+#!/usr/bin/env python
 # -*- coding: utf8 -*-
 #   Author:        ablozhou
 #   E-mail:        ablozhou@gmail.com
@@ -54,15 +54,24 @@ Korean_roman = 52
 Us_en = 81
 Eng_en = 82
 
+#编码
+WUBI=1
+CANGJIE=2
+FOURCORNER=3
+ZHENGMA=4
 class Phonetic():
-    def __init__(self,phonetic,sublang = Mandarin, language = Chinese ):
+    def __init__(self,phonetic,sublang = Mandarin, language = Chinese, complete = False ):
         self.language = language
         self.sublang = sublang
-        self.setphonetic(phonetic,sublang,language)
+        self.complete = complete
+        self.setphonetic(phonetic,sublang,language, complete)
 
-    def setphonetic(self,phonetic,sublang = Mandarin, language = Chinese):
+    def setphonetic(self,phonetic,sublang = Mandarin, language = Chinese, complete = False):
         if self.sublang == Mandarin:
-            self.phonetic = self.proc_phonetic(phonetic)
+            if complete == False:
+                self.phonetic = self.proc_phonetic(phonetic)
+            else:
+                self.phonetic = phonetic
         else:
             self.phonetic = phonetic
     #定位多音字的词，读音，第几个字的读音,避免重复，如“数数"
@@ -87,7 +96,7 @@ class Phonetic():
         return string.join(ps,'/')
 
     def proc_singleph(self,phonetic,tone = None):
-
+        log.debug('proc_singleph:'+phonetic.decode('utf8'))
         if tone == None:
             try:
                 tone = int(phonetic[-1:])
@@ -98,6 +107,7 @@ class Phonetic():
             #phonetic = phonetic.decode('utf8')
         #5 neutral tone
         if tone not in range(1,5):
+            print 'tone:'+str(tone)
             return phonetic
 
         a = ['ā', 'á', 'ǎ', 'à']
@@ -159,7 +169,7 @@ class Language():
 
     def getgloss(self):
         if len(self.gloss) > 0:
-            return 'en_gls:'+''.join(self.gloss)
+            return 'en:'+''.join(self.gloss)
         return ''
 
     #增加拼音
@@ -199,10 +209,14 @@ class Char: #字，词
         #self.mem = Memory()
         self.char=char #字型
 
+
         self.languages = {} #语言列表 chinese,korea,japanese,veitnamese
         self.freq=-1
         self.strokenum=-1 #笔画 number of strokes
         self.virant=[] #变体，如繁简异体字
+        self.consult={} #检索方法:检索码
+        self.radical='' #偏旁部首
+        self.strokes='' #横竖撇捺弯对应12345
 
     def addlang(self,lang):
         self.languages[lang.language]=lang
@@ -240,7 +254,7 @@ class Char: #字，词
                 if len(p) > 0:
                     p += ','
                 p += s
-        log.debug(p.encode('utf8'))
+        log.debug(p.decode('utf8'))
         return p
     #解释
     def addgloss(self,gloss,language):
