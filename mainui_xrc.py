@@ -45,9 +45,8 @@ class xrcmframe(wx.Frame):
 
 #!XRCED:begin-block:xrcmframe.OnButton_btnsearch
     def OnButton_btnsearch(self, evt):
-        print 'parent:OnButton_btnsearch'
-        
-        
+        # Replace with event handler code
+        print "OnButton_btnsearch()"
 #!XRCED:end-block:xrcmframe.OnButton_btnsearch        
 
 #!XRCED:begin-block:xrcmframe.OnButton_btnsave
@@ -91,9 +90,8 @@ def __gettext_strings():
     def _(str): pass
     
     _("Search(&F)")
-    _("hello,ABC")
+    _("hello")
     _("&Save")
     _("&About")
-    _("http://blog.csdn.net/ablo&zhou")
     _("Hanzi Daquan")
 
