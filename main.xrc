@@ -81,10 +81,10 @@
           <border>1</border>
         </object>
       </object>
-      <size>400,400</size>
+      <size>400,500</size>
     </object>
     <object class="wxStatusBar" name="status"/>
-    <size>500,400</size>
+    <size>600,500</size>
     <title>Hanzi Daquan</title>
     <centered>1</centered>
   </object>

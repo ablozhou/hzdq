@@ -44,43 +44,47 @@ class log4py:
             self.parent = parent
         def __del__(self):
             self.parent.debug('exit ',self.fcname)
-        
+
     def dbgfc(self,fcname):
         '''set debug function name'''
         f = None
         if 'debug' in self.flag:
-            
+
             f = self.function(fcname,self)
         return f
-        
-        
+
+
     def _gettime(self):
         return datetime.datetime.now().isoformat()
     #flag = INFO,DEBUG,WARNING,ERROR,FATAL
     def output(self, *fmt):
+
         for s in fmt:
+            if s == True:
+                traceback.format_exception(*sys.exc_info())
+                continue
             print s.encode(sys.getfilesystemencoding()),
         print ''
-    
+
     def debug(self,*fmt):
         #print self.flag
         if 'debug' in self.flag:
             self.output(self._gettime(),'[DEBUG]',self.modulename,*fmt)
-             
+
     def warn(self,*fmt):
         if 'warn' in self.flag:
             self.output(self._gettime(),'[WARN]',self.modulename,*fmt)
 
     def info(self,*fmt):
         self.output(self._gettime(),'[INFO]',self.modulename,*fmt)
-        
+
     def error(self,*fmt):
         #print '\033[0;30;41m',
         self.output(self._gettime(),'[ERROR]',self.modulename,*fmt)
         #print '\033[0m'
     def fatal(self,*fmt):
         self.output(self._gettime(),'[FATAL',self.modulename,*fmt)
-        
+
 #unit test
 if __name__ == '__main__':
     log=log4py()

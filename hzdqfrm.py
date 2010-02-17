@@ -38,99 +38,52 @@ import cPickle as pk
 import config
 import gettext
 import i18n
+import modules.data as data
 
 log = log4py.log4py('[hzdqframe]')
 
 encoding = sys.getfilesystemencoding()
 
+idxfile = './data/hzidx.dat'
+datafile = './data/unihan.dat'
+
+
 class hzdqframe(mainui_xrc.xrcmframe):
     def __init__(self,parent):
-    
+        #config file
         conf = config.Configure('hzdq.ini')
         lang = conf.getlocale()
-        self.test = i18n.install(self, 'lang', lang)
-        
+
+        #i18n
+        i18n.install(self, 'lang', lang)
+
         mainui_xrc.xrcmframe.__init__(self,parent)
         self.icon = wx.Icon('img/hzdq.ico', wx.BITMAP_TYPE_ICO)
-        self.SetIcon(self.icon)  
+        self.SetIcon(self.icon)
         self.txtmain = xrc.XRCCTRL(self, "txtmain")
 
         self.txtsearch = xrc.XRCCTRL(self, "txtsearch")
         self.txtsearch.SetValue('中'.decode('utf8'))
 
         s = self.txtsearch.GetValue().encode('utf8')
-        f = file('./data/hzidx.dat','rb')
-        self.hzidx = pk.load(f)
-        f.close()
+
+        #datafile
+        self.data = data.HzdqData(idxfile, datafile)
+        #index file
+#        f = file('./data/hzidx.dat','rb')
+#        self.hzidx = pk.load(f)
+#        f.close()
+
         #self.procdict = procdict.procdict('../../data/unihan.zip','blog.csdn.net/ablo_zhou')
         #self.unihan = self.procdict.dicttxt
 
-        self.unihan = file('./data/unihan.dat','rb')
+        #self.unihan = file('./data/unihan.dat','rb')
         #indx = '㐅'
 
         self.OnButton_btnsearch(None)
 
     def __del__(self):
-        log.debug('close file')
-        self.unihan.close()
-        log.debug('close file finished')
-
-
-#        self.gs = group.Groups(2, 20)
-#        self.gs.open('../../data/freq_part.txt')
-#        self.g = iter(self.gs)
-#        self.group = self.g.next()
-#        self.p = iter(self.group)
-    def fmtgloss(self,gloss):
-        glist = gloss.split(':')
-        if glist[0] == 'en':
-            return '\n英语解释:'+glist[1]
-        return ''
-
-    def fmtattr(self,attr):
-        if len(attr) < 2: #空的
-            return ''
-        plist = attr.split(',')
-        fmt = ''
-        #处理拼音
-        for s in plist:
-            ph = s.split(':')
-            if ph[0] == 'py': #拼音
-                fmt += '\n汉语拼音:'+ph[1]
-            elif ph[0] == 'Cant':
-                fmt += '\n粤语拼音:'+ph[1]
-            elif ph[0] == 'Hangul':
-                fmt += '\n朝鲜谚文:'+ph[1]
-                #print repr(ph[1].decode('utf8'))
-            elif ph[0] == 'KoRom':
-                fmt += '\n朝鲜罗马字:'+ph[1]
-            elif ph[0] == 'JKun':
-                fmt += '\n日语训读:'+ph[1]
-            elif ph[0] == 'JOn':
-                fmt += '\n日语音读:'+ph[1]
-            elif ph[0] == 'Viet':
-                fmt += '\n越南音标:'+ph[1]
-            elif ph[0] == 'wb':
-                fmt += '\n五笔:'+ph[1]
-            elif ph[0] == 'cj':
-                fmt += '\n仓颉:'+ph[1]
-            elif ph[0] == '4c':
-                fmt += '\n四角号码:'+ph[1]
-            elif ph[0] == 'zm':
-                fmt += '\n郑码:'+ph[1]
-            elif ph[0] == 'fq':
-                fmt += '\n频级:'+ph[1]
-            elif ph[0] == 'rd':
-                fmt += '\n部首:'+ph[1]
-            elif ph[0] == 'sn':
-                fmt += '\n笔画数:'+ph[1]
-            elif ph[0] == 'st':
-                fmt += '\n笔顺:'+ph[1]
-
-        return fmt
-
-    def fmtunicode(self,unicode):
-        return '\nUnicode:'+unicode
+        pass
 
     def OnButton_btnsave(self, evt):
         f = open('save.txt','a')
@@ -142,39 +95,11 @@ class hzdqframe(mainui_xrc.xrcmframe):
         log.debug('OnButton_btnsearch')
         search = self.txtsearch.GetValue()
         self.txtmain.SetValue(search)
-        res = ''
-        #p = phonetic.strip();
-        space = [' ', '\n', '\t']
-        for c in search:
-            if c == u'-' or c in space:
-                res += c.encode('utf8')
-                continue
-            if c in string.letters:
-                res += c.encode('utf8')+'\n'
-                continue
-            if c in string.digits:
-                res += c.encode('utf8')+'\n'
-                continue
+        hzdict,fmt = self.data.querys(search)
+        log.debug(fmt.decode('utf8'))
+        #space = [' ', '\n', '\t', '\r', '\f', '\v']
 
-            try:
-
-                seek = self.hzidx[c.encode('utf8')]
-                self.unihan.seek(seek)
-                line = self.unihan.readline()
-
-                log.debug(line.decode('utf8'))
-                l = line.split('\t')
-                fmt = l[0]+'\n'+'='*15
-
-                fmt += self.fmtunicode(l[1])
-                fmt += self.fmtattr(l[2])
-                fmt += self.fmtgloss(l[3])
-                res += fmt +'\n\n'
-                #res += '='*30
-
-            except AttributeError:
-                res += c +'\n'
-        self.txtmain.SetValue(res.decode('utf8'))
+        self.txtmain.SetValue(fmt.decode('utf8'))
 
     def OnButton_btnabout(self, evt):
         import version
