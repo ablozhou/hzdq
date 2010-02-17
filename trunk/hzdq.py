@@ -40,8 +40,6 @@ import wx
 import mainui_xrc
 import hzdqfrm
 import zipfile
-import i18n
-
 
 WEB='http://code.google.com/p/hzdq'
 
@@ -50,32 +48,37 @@ datapath = os.path.join(workpath,'data')
 os.chdir(workpath)
 sys.path.insert(0, workpath)
 
-i18n.install('lang',['zh_CN'])
-
-def checkfile(filename):
-    f = os.path.join(datapath,filename)
-    
-    isf = os.path.isfile(f)
-    if isf:
-        pass
-    else:
-        zfile = os.path.join(datapath,'unihan.cpr')
+class HzdqApp(wx.App):
+    def OnInit(self):
         
-        z = zipfile.ZipFile(zfile,'r',zipfile.ZIP_DEFLATED)
-        z.setpassword(WEB)
-        for fn in z.namelist():
-            z.extract(fn,datapath)
+        self.mainfrm = hzdqfrm.hzdqframe(parent = None)
+        self.checkfile('unihan.dat')
+        self.SetTopWindow(self.mainfrm)
+        self.mainfrm.Show()
+        return True
+        
+    def Exit(self):
+        pass
+        
+    def checkfile(self, filename):
+        f = os.path.join(datapath,filename)
+        
+        isf = os.path.isfile(f)
+        if isf:
+            pass
+        else:
+            zfile = os.path.join(datapath,'unihan.cpr')
+            
+            z = zipfile.ZipFile(zfile,'r',zipfile.ZIP_DEFLATED)
+            z.setpassword(WEB)
+            for fn in z.namelist():
+                z.extract(fn,datapath)
 
-        z.close()
-
-    
+            z.close()           
 #TODO 设置多行文本控件字体
 #指定一个文件的另一个执行文件
 def main():
-    app = wx.PySimpleApp()
-    checkfile('unihan.dat')
-    frame = hzdqfrm.hzdqframe(parent = None)
-    frame.Show()
+    app = HzdqApp()
     app.MainLoop()
 
 if __name__ == '__main__':

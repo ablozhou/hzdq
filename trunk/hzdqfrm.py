@@ -35,6 +35,9 @@ import modules.log4py as log4py
 import string
 import procdict
 import cPickle as pk
+import config
+import gettext
+import i18n
 
 log = log4py.log4py('[hzdqframe]')
 
@@ -42,7 +45,10 @@ encoding = sys.getfilesystemencoding()
 
 class hzdqframe(mainui_xrc.xrcmframe):
     def __init__(self,parent):
-
+    
+        conf = config.Configure('hzdq.ini')
+        lang = conf.getlocale()
+        self.test = i18n.install(self, 'lang', lang)
         mainui_xrc.xrcmframe.__init__(self,parent)
 
         self.txtmain = xrc.XRCCTRL(self, "txtmain")
@@ -169,15 +175,16 @@ class hzdqframe(mainui_xrc.xrcmframe):
         self.txtmain.SetValue(res.decode('utf8'))
 
     def OnButton_btnabout(self, evt):
-        description = "The dictionary is used to search all Chinese Characters of the latest Unicode Han Database version 5.2"
-        licence = "GNU General Public License version 2\n"
+        import version
+        description = version.DESC
+        license = version.LICENSE
         info = wx.AboutDialogInfo()
-        info.SetVersion('0.7')
-        info.SetName('Hanzi Daquan')
-        info.SetCopyright('(C) 2010 ablozhou')
-        info.SetWebSite('http://blog.csdn.net/ablo_zhou')
+        info.SetVersion(version.VERSION)
+        info.SetName(version.NAME)
+        info.SetCopyright(version.COPYRT)
+        info.SetWebSite(version.WEB)
         info.SetDescription(description)
-        info.SetLicence(licence)
+        info.SetLicence(license)
         info.AddDeveloper('ablozhou(周海汉) ablozhou@gmail.com\n'.decode('utf8'))
 
         wx.AboutBox(info)
