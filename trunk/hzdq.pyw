@@ -1,4 +1,4 @@
-#!/bin/env python
+#!/usr/bin/env python
 # -*- coding: utf8 -*-
 #   Author:        ablozhou
 #   E-mail:        ablozhou@gmail.com
