@@ -49,8 +49,10 @@ class hzdqframe(mainui_xrc.xrcmframe):
         conf = config.Configure('hzdq.ini')
         lang = conf.getlocale()
         self.test = i18n.install(self, 'lang', lang)
+        
         mainui_xrc.xrcmframe.__init__(self,parent)
-
+        self.icon = wx.Icon('img/hzdq.ico', wx.BITMAP_TYPE_ICO)
+        self.SetIcon(self.icon)  
         self.txtmain = xrc.XRCCTRL(self, "txtmain")
 
         self.txtsearch = xrc.XRCCTRL(self, "txtsearch")
