@@ -60,7 +60,7 @@ class HzdqData():
         log.debug(line.decode('utf8'))
         return line
 
-    def getgloss(self, ch, gloss):
+    def getgloss(self, ch, gloss, chdict):
         glist = gloss.split(':')
         if glist[0] == 'en':
             ch.addgloss(glist[1],char.English)
@@ -68,7 +68,7 @@ class HzdqData():
             return '\n英语解释:'+glist[1]
         return ''
 
-    def getattr(self, ch, attr):
+    def getattr(self, ch, attr, chdict):
         if len(attr) < 2: #空的
             return ''
         plist = attr.split(',')
@@ -78,56 +78,72 @@ class HzdqData():
             ph = s.split(':')
             if ph[0] == 'py': #拼音
                 ch.addphonetic(ph[1])
+                chdict[ph[0]] = ph[1]
                 fmt += '\n汉语拼音:'+ph[1]
             elif ph[0] == 'Cant':
+                chdict[ph[0]] = ph[1]
                 ch.addphonetic(ph[1],char.Cantonese,char.Chinese)
                 fmt += '\n粤语拼音:'+ph[1]
             elif ph[0] == 'Hangul':
+                chdict[ph[0]] = ph[1]
                 ch.addphonetic(ph[1],char.Hangul,char.Korean)
                 fmt += '\n朝鲜谚文:'+ph[1]
                 #print repr(ph[1].decode('utf8'))
             elif ph[0] == 'KoRom':
+                chdict[ph[0]] = ph[1]
                 ch.addphonetic(ph[1],char.Korean_roman,char.Korean)
                 fmt += '\n朝鲜罗马字:'+ph[1]
             elif ph[0] == 'JKun':
+                chdict[ph[0]] = ph[1]
                 ch.addphonetic(ph[1],char.JapaneseKun,char.Japanese)
                 fmt += '\n日语训读:'+ph[1]
             elif ph[0] == 'JOn':
+                chdict[ph[0]] = ph[1]
                 ch.addphonetic(ph[1],char.JapaneseOn,char.Japanese)
                 fmt += '\n日语音读:'+ph[1]
             elif ph[0] == 'Viet':
+                chdict[ph[0]] = ph[1]
                 ch.addphonetic(ph[1],char.Vietnamese,char.Vietnamese)
                 fmt += '\n越南音标:'+ph[1]
 
             elif ph[0] == 'wb':
+                chdict[ph[0]] = ph[1]
                 ch.consult[char.CANGJIE]=ph[1]
                 fmt += '\n五笔:'+ph[1]
             elif ph[0] == 'cj':
+                chdict[ph[0]] = ph[1]
                 ch.consult[char.WUBI]=ph[1]
                 fmt += '\n仓颉:'+ph[1]
             elif ph[0] == '4c':
+                chdict[ph[0]] = ph[1]
                 ch.consult[char.FOURCORNER]=ph[1]
                 fmt += '\n四角号码:'+ph[1]
             elif ph[0] == 'zm':
+                chdict[ph[0]] = ph[1]
                 ch.consult[char.ZHENGMA]=ph[1]
                 fmt += '\n郑码:'+ph[1]
 
             elif ph[0] == 'fq':
                 ch.freq=int(ph[1])
+                chdict[ph[0]] = ch.freq
                 fmt += '\n频级:'+ph[1]
             elif ph[0] == 'rd':
                 ch.radical = ph[1]
+                chdict[ph[0]] = ch.radical
                 fmt += '\n部首:'+ph[1]
             elif ph[0] == 'sn':
                 ch.strokenum=int(ph[1])
+                chdict[ph[0]] = ch.strokenum
                 fmt += '\n笔画数:'+ph[1]
             elif ph[0] == 'st':
                 ch.strokes = ph[1]
+                chdict[ph[0]] = ch.strokes
                 fmt += '\n笔顺:'+ph[1]
 
         return fmt
 
-    def getunicode(self, unicode):
+    def getunicode(self, unicode, chdict):
+        chdict['u32'] = unicode
         return '\nUnicode:'+unicode
 
     def query(self, c):
@@ -140,31 +156,31 @@ class HzdqData():
         ch = char.Char(c)
         hzdict[c] = ch
 
-        fmt += self.getunicode(l[1])
-        fmt += self.getattr(ch, l[2])
-        fmt += self.getgloss(ch, l[3])
+        fmt += self.getunicode(l[1], hzdict)
+        fmt += self.getattr(ch, l[2], hzdict)
+        fmt += self.getgloss(ch, l[3], hzdict)
         fmt += '\n\n'
         #log.debug(fmt.decode('utf8'))
 
         #except AttributeError:
         #    print traceback.format_exception(*sys.exc_info())
         #    log.error('AttributeError',True)
-        return ch,fmt
+        return fmt,hzdict
 
     def querys(self,search):
         space = [' ', '\n', '\t', '\r', '\f', '\v']
-        hzdict = {}
+        hzdicts = {}
         fmts = ''
         for c in search:
             if c == u'-' or c in space or c in string.letters or c in string.digits:
                 hzdict[c] = None
                 continue
 
-            ch,fmt = self.query(c)
+            fmt, chdict = self.query(c)
             fmts += fmt
-            hzdict[c] = ch
+            hzdicts[c] = chdict
 
-        return hzdict,fmts
+        return hzdicts,fmts
 
     def __del__(self):
         log.debug('close file')
@@ -236,7 +252,8 @@ if __name__ == '__main__':
     print sys.path
     hzdq = HzdqData('../data/hzidx.dat','../data/unihan.dat')
     hz = '中华汉'.decode('utf8')
-    hzdict, fmt = hzdq.querys(hz)
+    hzdicts, fmt = hzdq.querys(hz)
+
 #    s = hzdict[hz]
 #    p = s.getphonetics()
 #    t = s.char
@@ -244,4 +261,6 @@ if __name__ == '__main__':
 #    print g.encode('utf8')
 #    print t.encode('utf8')
 #    print p#.encode('utf8')
-    print fmt
+    for k,v in hzdicts.iteritems():
+        print v#.encode('utf8')
+    #print fmt
