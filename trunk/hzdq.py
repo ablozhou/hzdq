@@ -78,7 +78,7 @@ class HzdqApp(wx.App):
 #TODO 设置多行文本控件字体
 #指定一个文件的另一个执行文件
 def main():
-    app = HzdqApp()
+    app = HzdqApp(False)
     app.MainLoop()
 
 if __name__ == '__main__':
