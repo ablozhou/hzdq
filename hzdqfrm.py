@@ -98,8 +98,16 @@ class hzdqframe(mainui_xrc.xrcmframe):
         hzdict,fmt = self.data.querys(search)
         log.debug(fmt.decode('utf8'))
         #space = [' ', '\n', '\t', '\r', '\f', '\v']
+        points = self.txtmain.GetFont().GetPointSize()
+        fnormal = wx.Font(points + 3, wx.ROMAN, wx.NORMAL, wx.BOLD, False)
+        fhz = wx.Font(points + 10, wx.ROMAN, wx.NORMAL, wx.NORMAL, False)
 
-        self.txtmain.SetValue(fmt.decode('utf8'))
+        self.txtmain.SetValue(fmt)
+        #pos = fmt.find('=================')
+
+        self.txtmain.SetStyle(0, -1, wx.TextAttr("blue", wx.NullColour, fhz))
+
+        #self.txtmain.SetValue(fmt.decode('utf8'))
 
     def OnButton_btnabout(self, evt):
         import version
