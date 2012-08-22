@@ -1,9 +1,9 @@
-#summary One-sentence summary of this page.
 #labels Featured
+
 
 = Introduction =
 
-支持的汉字 unicode 范围
+支持的汉字 Unicode 范围
 
 
 = Details =
@@ -20,3 +20,6 @@
   * PUA（GBK）   [E815-E86F]    90个码位   实际80字
   * PUA部件扩展  [E400-E5FF]    511个码位  实际452字
   * PUA缺字增补  [E600-E6BF]    191个码位  实际185字
+
+= 总计 =
+76705 个中日韩越南汉字、假名，片假名和偏旁部首。
